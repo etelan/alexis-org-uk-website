@@ -1,14 +1,37 @@
 {
 	"$schema": "./node_modules/wrangler/config-schema.json",
+
 	"name": "alexis-org-uk-website",
+
 	"main": "./workers/app.ts",
+
 	"compatibility_date": "2025-10-08",
+
 	"compatibility_flags": ["nodejs_compat"],
+
 	"observability": {
 		"enabled": true
 	},
+
 	"upload_source_maps": true,
+
 	"vars": {
 		"VALUE_FROM_CLOUDFLARE": "Value From Cloudflare"
-	}
+	},
+
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "CURSOR_ROOM",
+				"class_name": "CursorRoom"
+			}
+		]
+	},
+
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["CursorRoom"]
+		}
+	]
 }

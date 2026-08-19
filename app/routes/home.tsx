@@ -1,17 +1,130 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import { useEffect, useRef, useState } from "react";
+
+type Cursor = {
+	id: string;
+	name: string;
+	color: string;
+	x: number;
+	y: number;
+};
+
+type ServerMessage =
+	| {
+			type: "welcome";
+			id: string;
+			name: string;
+			color: string;
+	  }
+	| {
+			type: "cursor";
+			id: string;
+			name: string;
+			color: string;
+			x: number;
+			y: number;
+	  }
+	| {
+			type: "leave";
+			id: string;
+	  };
 
 export function meta({}: Route.MetaArgs) {
 	return [
-		{ title: "New React Router App" },
-		{ name: "description", content: "Welcome to React Router!" },
+		{ title: "Alexis" },
+		{ name: "description", content: "Alexis' website" },
 	];
 }
 
-export function loader({ context }: Route.LoaderArgs) {
-	return { message: context.cloudflare.env.VALUE_FROM_CLOUDFLARE };
-}
+export default function Home() {
+	const [cursors, setCursors] = useState<Record<string, Cursor>>({});
+	const socketRef = useRef<WebSocket | null>(null);
+	const lastSentAt = useRef(0);
 
-export default function Home({ loaderData }: Route.ComponentProps) {
-	return <Welcome message={loaderData.message} />;
+	useEffect(() => {
+		const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+		const socket = new WebSocket(
+			`${protocol}://${window.location.host}/ws/homepage`,
+		);
+
+		socketRef.current = socket;
+
+		socket.addEventListener("message", (event) => {
+			const message = JSON.parse(event.data) as ServerMessage;
+
+			if (message.type === "cursor") {
+				setCursors((current) => ({
+					...current,
+					[message.id]: message,
+				}));
+			}
+
+			if (message.type === "leave") {
+				setCursors((current) => {
+					const next = { ...current };
+					delete next[message.id];
+					return next;
+				});
+			}
+		});
+
+		const handleMouseMove = (event: MouseEvent) => {
+			const now = Date.now();
+
+			// Limit cursor updates to roughly 30 times per second.
+			if (now - lastSentAt.current < 33) return;
+
+			lastSentAt.current = now;
+
+			if (socket.readyState !== WebSocket.OPEN) return;
+
+			socket.send(
+				JSON.stringify({
+					x: event.clientX,
+					y: event.clientY,
+				}),
+			);
+		};
+
+		window.addEventListener("mousemove", handleMouseMove);
+
+		return () => {
+			window.removeEventListener("mousemove", handleMouseMove);
+			socket.close();
+		};
+	}, []);
+
+	return (
+		<main className="relative min-h-screen overflow-hidden p-8">
+			<h1 className="text-4xl font-bold">Hello 👋</h1>
+
+			<p className="mt-4 text-lg">
+				Move your mouse around and open this page in another tab.
+			</p>
+
+			{Object.values(cursors).map((cursor) => (
+				<div
+					key={cursor.id}
+					className="pointer-events-none fixed z-50"
+					style={{
+						left: cursor.x,
+						top: cursor.y,
+						transform: "translate(8px, 8px)",
+					}}
+				>
+					<div
+						className="h-3 w-3 rounded-full"
+						style={{ backgroundColor: cursor.color }}
+					/>
+
+					<div
+						className="mt-1 rounded px-2 py-1 text-xs text-white"
+						style={{ backgroundColor: cursor.color }}
+					>
+						{cursor.name}
+					</div>
+				</div>
+			))}
+		</main>
+	);
 }
