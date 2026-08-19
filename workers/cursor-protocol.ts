@@ -15,6 +15,9 @@ export type CursorPosition = {
 	y: number;
 };
 
+// Make our cursor (Identity + Position) type
+export type Cursor = CursorSession & CursorPosition;
+
 // [SERVER sent to CLIENT]
 // Sent to a visitor when they join the room.
 export type WelcomeMessage = {
