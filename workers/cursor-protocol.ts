@@ -44,7 +44,7 @@ export type ServerMessage = WelcomeMessage | CursorMessage | LeaveMessage;
 export type ClientMessage = CursorPosition;
 
 // Cursor send rate and idle timeout.
-export const MAX_SENDS_PER_SECOND = 10;
+export const MAX_SENDS_PER_SECOND = 20;
 export const IDLE_TIMEOUT_MS = 5000;
 export const SEND_INTERVAL_MS = 1000 / MAX_SENDS_PER_SECOND;
 
