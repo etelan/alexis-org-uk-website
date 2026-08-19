@@ -39,7 +39,9 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
 	const [cursors, setCursors] = useState<Record<string, Cursor>>({});
 	const socketRef = useRef<WebSocket | null>(null);
+	const idleTimeoutRef = useRef<number | null>(null);
 	const lastSentAt = useRef(0);
+	const isIdleRef = useRef(false);
 
 	useEffect(() => {
 		const protocol = window.location.protocol === "https:" ? "wss" : "ws";
@@ -68,11 +70,26 @@ export default function Home() {
 			}
 		});
 
+		const resetIdleTimer = () => {
+			isIdleRef.current = false;
+
+			if (idleTimeoutRef.current !== null) {
+				window.clearTimeout(idleTimeoutRef.current);
+			}
+
+			idleTimeoutRef.current = window.setTimeout(() => {
+				isIdleRef.current = true;
+			}, 5000);
+		};
+
 		const handleMouseMove = (event: MouseEvent) => {
 			const now = Date.now();
 
-			// Limit cursor updates to roughly 30 times per second.
-			if (now - lastSentAt.current < 33) return;
+			resetIdleTimer();
+
+			// Limit cursor updates to 10 times per second.
+			if (now - lastSentAt.current < 100) return;
+			if (isIdleRef.current) return;
 
 			lastSentAt.current = now;
 
@@ -87,9 +104,13 @@ export default function Home() {
 		};
 
 		window.addEventListener("mousemove", handleMouseMove);
+		resetIdleTimer();
 
 		return () => {
 			window.removeEventListener("mousemove", handleMouseMove);
+			if (idleTimeoutRef.current !== null) {
+				window.clearTimeout(idleTimeoutRef.current);
+			}
 			socket.close();
 		};
 	}, []);
