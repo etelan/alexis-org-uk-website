@@ -1,4 +1,11 @@
+// Alexis Notes
+// There is one room per endpoint (aka, homepage). 
+// Each room is a Durable Object that manages the state of all connected clients. 
+// The room is responsible for broadcasting messages to all clients, and for keeping track of which clients are connected.
+
+
 import { DurableObject } from "cloudflare:workers";
+// Imports: We have subworkers for random-colour when a cursor loads in, cursor positioning and cursor position broadcasting.
 import { randomColor } from "./random-colour";
 import {
 	type CursorSession,

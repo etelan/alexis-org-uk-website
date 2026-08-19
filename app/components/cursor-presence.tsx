@@ -1,3 +1,6 @@
+// This is the master file for importing our Cursor logic into any typescript views or files.
+
+
 import { useEffect, useRef, useState } from "react";
 
 import {
