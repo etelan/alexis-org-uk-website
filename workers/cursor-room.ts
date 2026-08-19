@@ -1,16 +1,9 @@
 import { DurableObject } from "cloudflare:workers";
 import { randomColor } from "./random-colour";
-
-type CursorSession = {
-	id: string;
-	name: string;
-	color: string;
-};
-
-type CursorPosition = {
-	x: number;
-	y: number;
-};
+import {
+	type CursorSession,
+	parseCursorPosition,
+} from "./cursor-protocol";
 
 export class CursorRoom extends DurableObject<Env> {
 	async fetch(request: Request): Promise<Response> {
@@ -58,13 +51,12 @@ export class CursorRoom extends DurableObject<Env> {
 	) {
 		if (typeof message !== "string") return;
 
-		// Get the identity stored when this visitor connected.
 		const session =
 			sender.deserializeAttachment() as CursorSession | null;
 
 		if (!session) return;
 
-		const position = this.parsePosition(message);
+		const position = parseCursorPosition(message);
 
 		if (!position) return;
 
@@ -99,28 +91,6 @@ export class CursorRoom extends DurableObject<Env> {
 		}
 
 		socket.close(code, reason);
-	}
-
-	private parsePosition(message: string): CursorPosition | null {
-		try {
-			const data = JSON.parse(message);
-
-			// Ignore messages that aren't cursor positions.
-			if (
-				typeof data.x !== "number" ||
-				typeof data.y !== "number"
-			) {
-				return null;
-			}
-
-			return {
-				x: data.x,
-				y: data.y,
-			};
-		} catch {
-			// Ignore invalid JSON.
-			return null;
-		}
 	}
 
 	private broadcast(data: unknown, sender?: WebSocket) {
