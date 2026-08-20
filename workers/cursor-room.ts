@@ -28,7 +28,7 @@ export class CursorRoom extends DurableObject<Env> {
 		// Give each visitor their own identity.
 		const session: CursorSession = {
 			id: crypto.randomUUID(),
-			name: `Visitor ${this.ctx.getWebSockets().length + 1}`,
+			name: `${this.ctx.getWebSockets().length + 1}`,
 			color: randomColor(),
 		};
 

@@ -2,6 +2,7 @@
 // The UI for showing the cursors.
 
 import { useEffect, useRef, useState } from "react";
+import "./cursor.css";
 
 // Get all our message types between client and server
 import {
@@ -203,16 +204,12 @@ export function CursorPresence() {
 						transform: "translate(8px, 8px)",
 					}}
 				>
-					<div
-						className="h-3 w-3 rounded-full"
-						style={{ backgroundColor: cursor.color }}
-					/>
-
-					<div
-						className="mt-1 rounded px-2 py-1 text-xs text-white"
-						style={{ backgroundColor: cursor.color }}
-					>
-						{cursor.name}
+					<div className="cursor-with-text">
+						<img src={"images/Wii Cursor Blank.cur"} alt={cursor.name}/>
+						<p className="caption" 
+							style={{ "--cursor-color": cursor.color, "--size": "3px" } as React.CSSProperties}>
+							{cursor.name}
+						</p>
 					</div>
 				</div>
 			))}

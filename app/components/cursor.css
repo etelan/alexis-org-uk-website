@@ -1,0 +1,28 @@
+.cursor-with-text {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+}
+
+.cursor-with-text img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.caption {
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  text-align: center;
+  font-weight: bold;
+  text-shadow: var(--size) 0px 4px var(--cursor-color), 0px var(--size) 4px var(--cursor-color), 0px Calc(-1*var(--size)) 4px var(--cursor-color), Calc(-1*var(--size)) 0px 4px var(--cursor-color), Calc(-1*var(--size)) Calc(-1*var(--size)) 4px var(--cursor-color);
+  margin: 0;
+  font-size: 13px;
+  color: black;
+  border-radius: 1rem;
+}
