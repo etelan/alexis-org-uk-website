@@ -9,7 +9,7 @@ const D = 0.56 // z
 const PERIMETER = H + 3*D
 
 // Paints: grey everywhere, then the image squished into the left half
-function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceRatio: number[] = [W, H], heightMult: number=1, base: string='#cccccc') {
+function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceRatio: number[] = [W, H], heightMult: number=1, flip: boolean = false, base: string='#cccccc') {
   const canvasWidth = faceRatio[0] * 1000; 
   const canvasHeight = faceRatio[1] * 1000 / heightMult;
 
@@ -30,7 +30,13 @@ function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceR
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-  ctx.save();                                  
+  ctx.save();        
+  
+  ctx.save();
+  if (flip) {
+    ctx.translate(canvasWidth, canvasHeight); // origin → bottom edge
+    ctx.scale(-1, -1);
+  }
   ctx.drawImage(image, 0, offset, image.width, image.height);
   ctx.restore();  
   
@@ -45,15 +51,15 @@ function Box() {
   const materials = useMemo(() => {
     const plain = () => new THREE.MeshStandardMaterial({ color: "#cccccc" });
     const front = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement),
+      map: makeHalfImageTexture(loaded.image as HTMLImageElement, 0, [W, H], 1, true),
     });
 
     const top = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER - H +0.25, [2.75, 0.56], 2),
+      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER - H +0.25, [H, D], 2, true),
     });
 
     const back = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER + 2*D,),
+      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER + 2*D, [W, H], 1),
     });
 
     // order: right, left, top, bottom, FRONT, back
@@ -71,8 +77,7 @@ export default function Scene() {
   return (
         <div style={{ width: '100vw', height: '100vh' }}>
           <Canvas camera={{ position: [3, 3, 3], fov: 60 }}>
-            <ambientLight intensity={0.5} />
-            <directionalLight position={[5, 5, 5]} intensity={1.5} />
+            <ambientLight intensity={1.5} />
             <scene>
     
             </scene>
