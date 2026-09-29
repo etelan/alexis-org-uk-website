@@ -40,7 +40,7 @@ function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceR
 }
 
 function Box() {
-  const loaded = useTexture("app/routes/DX20V_WAVE.JPG"); // waits until the image is ready
+  const loaded = useTexture("images/DX20V_WAVE.JPG"); // waits until the image is ready
 
   const materials = useMemo(() => {
     const plain = () => new THREE.MeshStandardMaterial({ color: "#cccccc" });
