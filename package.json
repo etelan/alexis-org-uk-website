@@ -14,10 +14,13 @@
 		"publish": true
 	},
 	"dependencies": {
+		"@react-three/drei": "^10.7.9",
+		"@react-three/fiber": "^9.8.1",
 		"isbot": "5.1.32",
 		"react": "19.2.1",
 		"react-dom": "19.2.1",
-		"react-router": "7.9.6"
+		"react-router": "7.9.6",
+		"three": "^0.186.1"
 	},
 	"devDependencies": {
 		"@cloudflare/vite-plugin": "1.15.3",
@@ -26,6 +29,7 @@
 		"@types/node": "24.10.1",
 		"@types/react": "19.2.7",
 		"@types/react-dom": "19.2.3",
+		"@types/three": "^0.186.0",
 		"tailwindcss": "4.1.17",
 		"typescript": "5.9.3",
 		"vite": "^7.0.0",
@@ -42,5 +46,14 @@
 		"preview": "npm run build && vite preview",
 		"typecheck": "npm run typegen && tsc -b"
 	},
-	"type": "module"
+	"type": "module",
+	"allowScripts": {
+		"esbuild@0.25.4": true,
+		"esbuild@0.27.7": true,
+		"esbuild@0.27.3": true,
+		"sharp@0.33.5": true,
+		"sharp@0.34.5": true,
+		"workerd@1.20251125.0": true,
+		"workerd@1.20260504.1": true
+	}
 }
