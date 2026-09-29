@@ -1,7 +1,0 @@
-    const front = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement),
-    });
-
-    const top = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER - H +0.25, [2.75, 0.56], 2),
-    });

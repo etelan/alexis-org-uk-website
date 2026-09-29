@@ -14,10 +14,6 @@ function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceR
   const canvasHeight = faceRatio[1] * 1000 / heightMult;
 
   offset = offset == 0 ? 0 : (image.height / (PERIMETER / offset)) * -1
-    console.log("offset " + offset)
-    console.log("normal height " + image.height)
-
-
   const imageScaleUpRatio = canvasWidth / image.width;
   image.width = image.width * imageScaleUpRatio
   image.height = image.height * imageScaleUpRatio 
@@ -46,20 +42,26 @@ function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceR
 }
 
 function Box() {
-  const loaded = useTexture("images/DX20V_WAVE.JPG"); // waits until the image is ready
+  const loaded = useTexture("images/GREEN_REM.JPG"); // waits until the image is ready
+  const imageOffsetBack = -0.47
+  const imageOffsetTop = 0.1
+  const imageOffsetFront = 0
+  const imageTopMult = 1.5
+  const imageFrontMult = 0.97
+  const imageFrontBackupColour = "#c2c2c2"
 
   const materials = useMemo(() => {
     const plain = () => new THREE.MeshStandardMaterial({ color: "#cccccc" });
     const front = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement, 0, [W, H], 1, true),
+      map: makeHalfImageTexture(loaded.image as HTMLImageElement, imageOffsetFront, [W, H], imageFrontMult, true, imageFrontBackupColour),
     });
 
     const top = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER - H +0.25, [H, D], 2, true),
+      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER - H + imageOffsetTop, [H, D], imageTopMult, true),
     });
 
     const back = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER + 2*D, [W, H], 1),
+      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER + 2*D + imageOffsetBack, [W, H], 1, false),
     });
 
     // order: right, left, top, bottom, FRONT, back

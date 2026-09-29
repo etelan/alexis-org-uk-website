@@ -1,0 +1,8 @@
+function Box() {
+  const loaded = useTexture("images/Robert_Cox_-_Music_Without_Edges.JPG"); // waits until the image is ready
+  const imageOffsetBack = -0.5;
+  const imageOffsetTop = 0.09;
+  const imageOffsetFront = 0;
+  const imageTopMult = 1.8;
+  const imageFrontMult = 1.09;
+  const imageFrontBackupColour = "#c2c2c2";

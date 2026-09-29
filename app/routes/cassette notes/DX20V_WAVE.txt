@@ -1,0 +1,8 @@
+function Box() {
+  const loaded = useTexture("images/DX20V_WAVE.JPG"); // waits until the image is ready
+  const imageOffsetBack = 0;
+  const imageOffsetTop = 0.23;
+  const imageOffsetFront = -0.1;
+  const imageTopMult = 2;
+  const imageFrontMult = 1;
+  const imageFrontBackupColour = "#232323";

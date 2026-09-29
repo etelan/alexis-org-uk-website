@@ -1,0 +1,8 @@
+function Box() {
+  const loaded = useTexture("images/GREEN_REM.JPG"); // waits until the image is ready
+  const imageOffsetBack = -0.47
+  const imageOffsetTop = 0.1
+  const imageOffsetFront = 0
+  const imageTopMult = 1.5
+  const imageFrontMult = 0.97
+  const imageFrontBackupColour = "#c2c2c2"
