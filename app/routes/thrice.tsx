@@ -8,6 +8,10 @@ const H = 2.75 // y
 const D = 0.56 // z
 const PERIMETER = H + 3*D
 
+const highResImageSRC = "images/high_res/"
+const lowResImageSRC = "images/low_res/"
+const lowResMode = true
+
 // Paints: grey everywhere, then the image squished into the left half
 function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceRatio: number[] = [W, H], heightMult: number=1, flip: boolean = false, base: string='#cccccc') {
   const canvasWidth = faceRatio[0] * 500; 
@@ -104,72 +108,72 @@ export default function Scene() {
 
         <Box 
           position={0} 
-          imageSRC="images/GREEN_REM.JPG" 
+          imageSRC={lowResMode ? lowResImageSRC + "GREEN_REM.PNG" : highResImageSRC + "GREEN_REM.JPG"}
           imageOffsetArray={[-0.47, 0.1, 0]} 
           multArray={[1, 1.5, 0.97]}/>
 
         <Box 
           position={1} 
-          imageSRC="images/Robert_Cox_-_Music_Without_Edges.JPG" 
+          imageSRC={lowResMode ? lowResImageSRC + "Robert_Cox_-_Music_Without_Edges.PNG" : highResImageSRC + "Robert_Cox_-_Music_Without_Edges.JPG"}
           imageOffsetArray={[-0.5, 0.09, 0]} 
           multArray={[1, 1.8, 1.09]} />
 
         <Box 
           position={2} 
-          imageSRC="images/DX20V_WAVE.JPG" 
+          imageSRC={lowResMode ? lowResImageSRC + "DX20V_WAVE.PNG" : highResImageSRC + "DX20V_WAVE.JPG"}
           imageOffsetArray={[0, 0.23, -0.1]} 
           multArray={[1, 2, 1]}
           backupColour="#232323"/>
 
         <Box 
           position={3} 
-          imageSRC="images/the_sugar_cubes_-_lifes_too_good.JPG" 
+          imageSRC={lowResMode ? lowResImageSRC + "the_sugar_cubes_-_lifes_too_good.PNG" : highResImageSRC + "the_sugar_cubes_-_lifes_too_good.JPG"}
           imageOffsetArray={[-0.3, 0.2, 0]} 
           multArray={[1, 2, 1.05]} />
 
         <Box 
           position={4} 
-          imageSRC="images/the_future_sound_of_london.JPG" 
+          imageSRC={lowResMode ? lowResImageSRC + "the_future_sound_of_london.PNG" : highResImageSRC + "the_future_sound_of_london.JPG"}
           imageOffsetArray={[0, 0.2, 0]} 
           multArray={[1, 2, 1.07]} />
 
         <Box 
           position={5} 
-          imageSRC="images/Alchemy_-_Esoteric.JPG" 
+          imageSRC={lowResMode ? lowResImageSRC + "Alchemy_-_Esoteric.PNG" : highResImageSRC + "Alchemy_-_Esoteric.JPG"} 
           imageOffsetArray={[-0.35, 0.181, 0]} 
           multArray={[1, 1.9, 1.016]} />
 
         <Box 
           position={6} 
-          imageSRC="images/Loris_S_Sarid_-_Innis_Chonnel_-_WHERE_THE_ROUND_THINGS_LIVE.JPG" 
+          imageSRC={lowResMode ? lowResImageSRC + "Loris_S_Sarid_-_Innis_Chonnel_-_WHERE_THE_ROUND_THINGS_LIVE.PNG" : highResImageSRC + "Loris_S_Sarid_-_Innis_Chonnel_-_WHERE_THE_ROUND_THINGS_LIVE.JPG"} 
           imageOffsetArray={[-0.35, 0.155, -0.22]} 
           multArray={[1, 1.8, 1]}
           backupColour="#c2c2c2" />
 
         <Box 
           position={7} 
-          imageSRC="images/Death_Is_Not_The_End_-_Tragic_Tigers_Sad_Meltdown.JPG" 
+          imageSRC={lowResMode ? lowResImageSRC + "Death_Is_Not_The_End_-_Tragic_Tigers_Sad_Meltdown.PNG" : highResImageSRC + "Death_Is_Not_The_End_-_Tragic_Tigers_Sad_Meltdown.JPG"} 
           imageOffsetArray={[-0.4, 0.14, 0]} 
           multArray={[1, 1.8, 1]}
           backupColour="#c2c2c2" />
 
         <Box 
           position={8} 
-          imageSRC="images/exlruth_-_from_heaven.JPG" 
+          imageSRC={lowResMode ? lowResImageSRC + "exlruth_-_from_heaven.PNG" : highResImageSRC + "exlruth_-_from_heaven.JPG"} 
           imageOffsetArray={[-0.45, 0.07, 0]} 
           multArray={[1, 1.5, 1.05]}
           backupColour="#c2c2c2" />
 
         <Box 
           position={9} 
-          imageSRC="images/trench_art_-_RULES_FOR_RADICALS.JPG" 
+          imageSRC={lowResMode ? lowResImageSRC + "trench_art_-_RULES_FOR_RADICALS.PNG" : highResImageSRC + "trench_art_-_RULES_FOR_RADICALS.JPG"} 
           imageOffsetArray={[-0.32, 0.144, 0]} 
           multArray={[1, 1.7, 1.056]}
           backupColour="#c2c2c2" />
 
         <Box 
           position={10} 
-          imageSRC="images/The_Sythesizer_Rock_Orchestra_-_Orchestral_Rock.JPG" 
+          imageSRC={lowResMode ? lowResImageSRC + "The_Sythesizer_Rock_Orchestra_-_Orchestral_Rock.PNG" : highResImageSRC + "The_Sythesizer_Rock_Orchestra_-_Orchestral_Rock.JPG"} 
           imageOffsetArray={[-1.8, -0.37, 0]} 
           multArray={[1, 1.5, 0.94]}
           backupColour="#c2c2c2" />
