@@ -13,10 +13,6 @@ const highResImageSRC = "images/high_res/"
 const lowResImageSRC = "images/low_res/"
 const lowResMode = true
 
-async function sleep(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 const loadingManager = new THREE.LoadingManager();
 loadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
   console.log(`Started loading: ${url}. Loaded ${itemsLoaded} of ${itemsTotal} files.`);
@@ -24,10 +20,10 @@ loadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
 
 loadingManager.onLoad = async function () {
   console.log('Loading complete!');
-  await sleep(1000)
   const loadingScreen = document.getElementById('loading-screen');
   if (loadingScreen) {
     loadingScreen.style.opacity = '0';
+    loadingScreen.style.pointerEvents = 'none';
   }
 }
 
@@ -42,8 +38,8 @@ loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
 // Paints: grey everywhere, then the image squished into the left half
 function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceRatio: number[] = [W, H], heightMult: number=1, flip: boolean = false, base: string='#cccccc') {
   console.log(`The Image Is: ${image}`)
-  const canvasWidth = faceRatio[0] * 1000; 
-  const canvasHeight = faceRatio[1] * 1000 / heightMult;
+  const canvasWidth = faceRatio[0] * 700; 
+  const canvasHeight = faceRatio[1] * 700 / heightMult;
 
   offset = offset == 0 ? 0 : (image.height / (PERIMETER / offset)) * -1
   const imageScaleUpRatio = canvasWidth / image.width;
@@ -121,7 +117,7 @@ function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour }: 
   );
 }
 
-export default function Scene() {
+export default function App() {
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <div id="loading-screen">
@@ -206,7 +202,6 @@ export default function Scene() {
           multArray={[1, 1.5, 0.94]}
           backupColour="#c2c2c2" />
 
-        <OrbitControls />
       </Canvas>
     </div>
   );

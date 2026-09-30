@@ -1,7 +1,7 @@
 /* Hide default body margin/padding */
 body {
     margin: 0;
-    overflow: hidden; /* Prevent scrollbars */
+    overflow: hidden;
 }
  
 /* Loading screen overlay */
