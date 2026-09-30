@@ -1,7 +1,7 @@
 import { Suspense, useMemo } from "react";
 import * as THREE from "three";
 import { Canvas, useLoader } from "@react-three/fiber";
-import { OrbitControls, useTexture, } from "@react-three/drei";
+import { MapControls, OrbitControls } from "@react-three/drei";
 import './thrice.css'
 
 const W = 4.25 // x
@@ -13,6 +13,7 @@ const highResImageSRC = "images/high_res/"
 const lowResImageSRC = "images/low_res/"
 const lowResMode = true
 
+// Loading manager code
 const loadingManager = new THREE.LoadingManager();
 loadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
   console.log(`Started loading: ${url}. Loaded ${itemsLoaded} of ${itemsTotal} files.`);
@@ -27,7 +28,6 @@ loadingManager.onLoad = async function () {
   }
 }
 
-// Triggered for EACH asset as it loads (updates progress)
 loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
     const progress = (itemsLoaded / itemsTotal) * 100; // Percentage
     document.getElementById('progress-bar')?.style.setProperty('width', `${progress}%`);
@@ -35,8 +35,8 @@ loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
     console.log(`Progress: ${progress.toFixed(1)}%`);
 };
 
-// Paints: grey everywhere, then the image squished into the left half
-function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceRatio: number[] = [W, H], heightMult: number=1, flip: boolean = false, base: string='#cccccc') {
+// This creates our cassette texture from the image, with adjustable settings
+function createCassetteTexture(image: HTMLImageElement, offset: number = 0, faceRatio: number[] = [W, H], heightMult: number=1, flip: boolean = false, base: string='#cccccc') {
   console.log(`The Image Is: ${image}`)
   const canvasWidth = faceRatio[0] * 700; 
   const canvasHeight = faceRatio[1] * 700 / heightMult;
@@ -91,15 +91,15 @@ function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour }: 
   const materials = useMemo(() => {
     const plain = () => new THREE.MeshStandardMaterial({ color: "#cccccc" });
     const front = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement, imageOffsetFront, [W, H], imageFrontMult, true, imageFrontBackupColour),
+      map: createCassetteTexture(loaded.image as HTMLImageElement, imageOffsetFront, [W, H], imageFrontMult, true, imageFrontBackupColour),
     });
 
     const top = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER - H + imageOffsetTop, [H, D], imageTopMult, true),
+      map: createCassetteTexture(loaded.image as HTMLImageElement, PERIMETER - H + imageOffsetTop, [H, D], imageTopMult, true),
     });
 
     const back = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER + 2*D + imageOffsetBack, [W, H], imageBackMult, false),
+      map: createCassetteTexture(loaded.image as HTMLImageElement, PERIMETER + 2*D + imageOffsetBack, [W, H], imageBackMult, false),
     });
 
     // order: right, left, top, bottom, FRONT, back
@@ -127,8 +127,13 @@ export default function App() {
           <p id="status-text">Loading assets...</p>
       </div>
 
-      <Canvas camera={{ position: [0, 7, 0], fov: 60 }}>
+      <Canvas 
+        camera={{ position: [0, 7, 0], fov: 60 }}>
         <ambientLight intensity={2} />
+
+        <MapControls
+          enableRotate={false}
+          onChange={(e) => { const c = e?.target; c.target.z = c.object.position.z = 0 }}/> // lock the orbit queen
 
         <Box 
           position={0} 
