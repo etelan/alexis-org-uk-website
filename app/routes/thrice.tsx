@@ -10,8 +10,8 @@ const PERIMETER = H + 3*D
 
 // Paints: grey everywhere, then the image squished into the left half
 function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceRatio: number[] = [W, H], heightMult: number=1, flip: boolean = false, base: string='#cccccc') {
-  const canvasWidth = faceRatio[0] * 1000; 
-  const canvasHeight = faceRatio[1] * 1000 / heightMult;
+  const canvasWidth = faceRatio[0] * 500; 
+  const canvasHeight = faceRatio[1] * 500 / heightMult;
 
   offset = offset == 0 ? 0 : (image.height / (PERIMETER / offset)) * -1
   const imageScaleUpRatio = canvasWidth / image.width;
@@ -41,14 +41,16 @@ function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceR
   return texture;
 }
 
-function Box() {
-  const loaded = useTexture("images/GREEN_REM.JPG"); // waits until the image is ready
-  const imageOffsetBack = -0.47
-  const imageOffsetTop = 0.1
-  const imageOffsetFront = 0
-  const imageTopMult = 1.5
-  const imageFrontMult = 0.97
-  const imageFrontBackupColour = "#c2c2c2"
+// All arrays are [back, top, front]
+function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour }: { position: number, imageSRC: string, imageOffsetArray: number[], multArray: number[], backupColour?: string }) {
+  const loaded = useTexture(imageSRC); // waits until the image is ready
+  const imageOffsetBack = imageOffsetArray[0]
+  const imageOffsetTop = imageOffsetArray[1]
+  const imageOffsetFront = imageOffsetArray[2]
+  const imageTopMult = multArray[1]
+  const imageFrontMult = multArray[2]
+  const imageBackMult = multArray[0]
+  let imageFrontBackupColour = backupColour || "#c2c2c2"
 
   const materials = useMemo(() => {
     const plain = () => new THREE.MeshStandardMaterial({ color: "#cccccc" });
@@ -61,7 +63,7 @@ function Box() {
     });
 
     const back = new THREE.MeshStandardMaterial({
-      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER + 2*D + imageOffsetBack, [W, H], 1, false),
+      map: makeHalfImageTexture(loaded.image as HTMLImageElement, PERIMETER + 2*D + imageOffsetBack, [W, H], imageBackMult, false),
     });
 
     // order: right, left, top, bottom, FRONT, back
@@ -69,23 +71,111 @@ function Box() {
   }, [loaded]);
 
   return (
-    <mesh material={materials}>
+    <mesh
+      material={materials}
+      position={[(position-5) * (D+0.2), 0, 0]}
+      rotation={[0, -Math.PI / 2, 0]}
+    >
       <boxGeometry args={[W, H, D]} />
     </mesh>
   );
 }
 
 export default function Scene() {
-  return (
-        <div style={{ width: '100vw', height: '100vh' }}>
-          <Canvas camera={{ position: [3, 3, 3], fov: 60 }}>
-            <ambientLight intensity={1.5} />
-            <scene>
+  // return (
+  //       <div style={{ width: '100vw', height: '100vh' }}>
+  //         <Canvas camera={{ position: [3, 3, 3], fov: 60 }}>
+  //           <ambientLight intensity={1.5} />
+  //           <scene>
     
-            </scene>
-            <Box position={[0, 0, 0]} />
-            <OrbitControls />
-          </Canvas>
-        </div>
+  //           </scene>
+  //           <Box position={[0, 0, 0]} />
+  //           <OrbitControls />
+  //         </Canvas>
+  //       </div>
+
+  return (
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <Canvas camera={{ position: [0, 7, 0], fov: 60 }}>
+        <ambientLight intensity={4} />
+        <scene>
+
+        </scene>
+
+        <Box 
+          position={0} 
+          imageSRC="images/GREEN_REM.JPG" 
+          imageOffsetArray={[-0.47, 0.1, 0]} 
+          multArray={[1, 1.5, 0.97]}/>
+
+        <Box 
+          position={1} 
+          imageSRC="images/Robert_Cox_-_Music_Without_Edges.JPG" 
+          imageOffsetArray={[-0.5, 0.09, 0]} 
+          multArray={[1, 1.8, 1.09]} />
+
+        <Box 
+          position={2} 
+          imageSRC="images/DX20V_WAVE.JPG" 
+          imageOffsetArray={[0, 0.23, -0.1]} 
+          multArray={[1, 2, 1]}
+          backupColour="#232323"/>
+
+        <Box 
+          position={3} 
+          imageSRC="images/the_sugar_cubes_-_lifes_too_good.JPG" 
+          imageOffsetArray={[-0.3, 0.2, 0]} 
+          multArray={[1, 2, 1.05]} />
+
+        <Box 
+          position={4} 
+          imageSRC="images/the_future_sound_of_london.JPG" 
+          imageOffsetArray={[0, 0.2, 0]} 
+          multArray={[1, 2, 1.07]} />
+
+        <Box 
+          position={5} 
+          imageSRC="images/Alchemy_-_Esoteric.JPG" 
+          imageOffsetArray={[-0.35, 0.181, 0]} 
+          multArray={[1, 1.9, 1.016]} />
+
+        <Box 
+          position={6} 
+          imageSRC="images/Loris_S_Sarid_-_Innis_Chonnel_-_WHERE_THE_ROUND_THINGS_LIVE.JPG" 
+          imageOffsetArray={[-0.35, 0.155, -0.22]} 
+          multArray={[1, 1.8, 1]}
+          backupColour="#c2c2c2" />
+
+        <Box 
+          position={7} 
+          imageSRC="images/Death_Is_Not_The_End_-_Tragic_Tigers_Sad_Meltdown.JPG" 
+          imageOffsetArray={[-0.4, 0.14, 0]} 
+          multArray={[1, 1.8, 1]}
+          backupColour="#c2c2c2" />
+
+        <Box 
+          position={8} 
+          imageSRC="images/exlruth_-_from_heaven.JPG" 
+          imageOffsetArray={[-0.45, 0.07, 0]} 
+          multArray={[1, 1.5, 1.05]}
+          backupColour="#c2c2c2" />
+
+        <Box 
+          position={9} 
+          imageSRC="images/trench_art_-_RULES_FOR_RADICALS.JPG" 
+          imageOffsetArray={[-0.32, 0.144, 0]} 
+          multArray={[1, 1.7, 1.056]}
+          backupColour="#c2c2c2" />
+
+        <Box 
+          position={10} 
+          imageSRC="images/The_Sythesizer_Rock_Orchestra_-_Orchestral_Rock.JPG" 
+          imageOffsetArray={[-1.8, -0.37, 0]} 
+          multArray={[1, 1.5, 0.94]}
+          backupColour="#c2c2c2" />
+
+        {/* <OrbitControls /> */}
+      </Canvas>
+    </div>
   );
 }
