@@ -1,0 +1,47 @@
+/* Hide default body margin/padding */
+body {
+    margin: 0;
+    overflow: hidden; /* Prevent scrollbars */
+}
+ 
+/* Loading screen overlay */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #1a1a1a; /* Dark background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's above the canvas */
+    transition: opacity 0.5s ease-out; /* Fade out when loading completes */
+}
+ 
+/* Progress bar container */
+#progress-container {
+    width: 50%;
+    height: 8px;
+    background: #333;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+ 
+/* Progress bar fill */
+#progress-bar {
+    height: 100%;
+    width: 0%; /* Start at 0% */
+    background: #00ff9d; /* Bright green accent */
+    transition: width 0.3s ease; /* Smooth width updates */
+}
+ 
+/* Status text */
+#status-text {
+    color: white;
+    font-family: 'Arial', sans-serif;
+    font-size: 1.2rem;
+    margin: 0;
+}

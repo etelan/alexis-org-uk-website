@@ -1,7 +1,8 @@
 import { Suspense, useMemo } from "react";
 import * as THREE from "three";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useTexture } from "@react-three/drei";
+import { Canvas, useLoader } from "@react-three/fiber";
+import { OrbitControls, useTexture, } from "@react-three/drei";
+import './thrice.css'
 
 const W = 4.25 // x
 const H = 2.75 // y
@@ -12,10 +13,37 @@ const highResImageSRC = "images/high_res/"
 const lowResImageSRC = "images/low_res/"
 const lowResMode = true
 
+async function sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const loadingManager = new THREE.LoadingManager();
+loadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
+  console.log(`Started loading: ${url}. Loaded ${itemsLoaded} of ${itemsTotal} files.`);
+};
+
+loadingManager.onLoad = async function () {
+  console.log('Loading complete!');
+  await sleep(1000)
+  const loadingScreen = document.getElementById('loading-screen');
+  if (loadingScreen) {
+    loadingScreen.style.opacity = '0';
+  }
+}
+
+// Triggered for EACH asset as it loads (updates progress)
+loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+    const progress = (itemsLoaded / itemsTotal) * 100; // Percentage
+    document.getElementById('progress-bar')?.style.setProperty('width', `${progress}%`);
+    document.getElementById('status-text')?.style.setProperty('textContent', `Loaded ${itemsLoaded}/${itemsTotal} assets`);
+    console.log(`Progress: ${progress.toFixed(1)}%`);
+};
+
 // Paints: grey everywhere, then the image squished into the left half
 function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceRatio: number[] = [W, H], heightMult: number=1, flip: boolean = false, base: string='#cccccc') {
-  const canvasWidth = faceRatio[0] * 500; 
-  const canvasHeight = faceRatio[1] * 500 / heightMult;
+  console.log(`The Image Is: ${image}`)
+  const canvasWidth = faceRatio[0] * 1000; 
+  const canvasHeight = faceRatio[1] * 1000 / heightMult;
 
   offset = offset == 0 ? 0 : (image.height / (PERIMETER / offset)) * -1
   const imageScaleUpRatio = canvasWidth / image.width;
@@ -46,8 +74,8 @@ function makeHalfImageTexture(image: HTMLImageElement, offset: number = 0, faceR
 }
 
 // All arrays are [back, top, front]
-function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour }: { position: number, imageSRC: string, imageOffsetArray: number[], multArray: number[], backupColour?: string }) {
-  const loaded = useTexture(imageSRC); // waits until the image is ready
+function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour }: { position: number, imageSRC: string, imageOffsetArray: number[], multArray: number[], backupColour?: string }) {  
+  console.log("Loading image: " + imageSRC)
   const imageOffsetBack = imageOffsetArray[0]
   const imageOffsetTop = imageOffsetArray[1]
   const imageOffsetFront = imageOffsetArray[2]
@@ -55,6 +83,14 @@ function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour }: 
   const imageFrontMult = multArray[2]
   const imageBackMult = multArray[0]
   let imageFrontBackupColour = backupColour || "#c2c2c2"
+
+  const loaded = useLoader(
+    THREE.TextureLoader,
+    imageSRC,
+    (loader) => {
+      loader.manager = loadingManager;
+    }
+  );
 
   const materials = useMemo(() => {
     const plain = () => new THREE.MeshStandardMaterial({ color: "#cccccc" });
@@ -86,25 +122,17 @@ function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour }: 
 }
 
 export default function Scene() {
-  // return (
-  //       <div style={{ width: '100vw', height: '100vh' }}>
-  //         <Canvas camera={{ position: [3, 3, 3], fov: 60 }}>
-  //           <ambientLight intensity={1.5} />
-  //           <scene>
-    
-  //           </scene>
-  //           <Box position={[0, 0, 0]} />
-  //           <OrbitControls />
-  //         </Canvas>
-  //       </div>
-
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
-      <Canvas camera={{ position: [0, 7, 0], fov: 60 }}>
-        <ambientLight intensity={4} />
-        <scene>
+      <div id="loading-screen">
+          <div id="progress-container">
+              <div id="progress-bar"></div>
+          </div>
+          <p id="status-text">Loading assets...</p>
+      </div>
 
-        </scene>
+      <Canvas camera={{ position: [0, 7, 0], fov: 60 }}>
+        <ambientLight intensity={2} />
 
         <Box 
           position={0} 
@@ -178,7 +206,7 @@ export default function Scene() {
           multArray={[1, 1.5, 0.94]}
           backupColour="#c2c2c2" />
 
-        {/* <OrbitControls /> */}
+        <OrbitControls />
       </Canvas>
     </div>
   );
