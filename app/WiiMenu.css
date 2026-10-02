@@ -38,21 +38,53 @@
   box-shadow: inset 0 0 0 4px rgba(12, 118, 160, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.wii-whole-box .wii-below-grid-bar {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  bottom: 0;
-  margin-top: 0;
-}
-
 @font-face {
   font-family: digitalClock;
   src: url('/assets/fonts/digital-7.ttf');
 }
 
-.date {
+@font-face {
+  font-family: softerFont;
+  src: url(/assets/fonts/contm.ttf);
+}
+
+.wii-whole-box .wii-footer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 0 4px #4abbe8b6;
+  line-height: 1;
+  align-items: center;
+  background: linear-gradient(to bottom, #b4b4ba, #cfd1d7);
+  bottom: 0;
+  margin-top: 0;
+  height: 15vh;
+}
+
+.wii-whole-box .wii-footer .timebox {
+  width: 30vw;
+  margin-top: -4px;
+  border-radius: 200px 200px 0 0 / 90px 90px 0 0; 
+  border-top: 4px solid #4abbe8b6;
+  border-left: 4px solid #4abbe8b6;
+  border-right: 4px solid #4abbe8b6;
+  -webkit-transform: rotate(180deg);
+  background: #e9e9e9;
+}
+
+.wii-whole-box .wii-footer .time {
   font-size: 8vh;
   color: #777;
+  width: 30vw;
+  text-align: center;
   font-family: digitalClock;
+  -webkit-transform: rotate(180deg);
+}
+
+.wii-whole-box .wii-footer .date {
+  font-size: 5vh;
+  width: 100vw;
+  text-align: center;
+  color: #777;
+  font-family: softerFont;
 }
