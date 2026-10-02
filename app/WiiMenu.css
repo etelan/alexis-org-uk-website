@@ -21,12 +21,12 @@
 }
 
 .wii-whole-box .wii-grid {
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(5, 18vw);
   grid-auto-rows: repeat(2, auto); 
   gap: 10px;
   margin-top: 5vh;
-  margin-bottom: 14vh;
   align-items: start;
 }
 
@@ -88,7 +88,6 @@
   }
 }
 
-
 .wii-whole-box .wii-grid .wii-tile {
   position: relative;
   aspect-ratio: 40 / 21;
@@ -133,6 +132,7 @@
 }
 
 .wii-whole-box .wii-footer {
+  z-index: 2;
   position: absolute;
   display: flex;
   flex-direction: column;
