@@ -38,9 +38,13 @@ export default function WiiMenu() {
 
             if (!tile) return <div className="wii-tile" key={i} />;
             return (
-              <form className="wii-tile" action={tile.url} method="get" key={i}>
-                <input className="wii-tile-image" type="image" src={tile.image} alt={tile.imageAlt} aria-label={`Tile ${tile.id}`} />
-              </form>
+              <a className="wii-tile" href={tile.url} key={i}>
+                <img
+                  className="wii-tile-image"
+                  src={tile.image}
+                  alt={tile.imageAlt}
+                />
+              </a>
             );
           })}
         </div>

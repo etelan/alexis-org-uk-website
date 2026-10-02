@@ -1,0 +1,85 @@
+body {
+    background: #FFFFFF;
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: fit-content;
+    min-height: 100vh;
+}
+
+.copyable {
+    color: purple;
+}
+
+.copiedBox {
+    z-index: 1000;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background: #202124;
+    color: white;
+    font-weight: bold;
+    position: fixed;
+    pointer-events: none;
+    transform: translate(-50%, calc(-100% - 8px));
+    animation: copied-box-fade 1s ease-out forwards;
+}
+
+@keyframes copied-box-fade {
+    from {
+        opacity: 1;
+        transform: translate(-50%, calc(-100% - 8px));
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, calc(-100% - 20px));
+    }
+}
+
+.cv-page {
+    margin-top: 3vh;
+    width: 50vw;
+    display: block;
+    color: #000000;
+}
+
+h1 {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+h3 {
+    font-size: 1.7rem;
+    margin-bottom: 0.5rem;
+}
+
+h4 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+h5, strong {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+ul {
+  list-style: disc inside none;
+  font-size: 1.2rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
