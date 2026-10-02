@@ -1,5 +1,6 @@
 import type { Route } from "./+types/home";
-import { CursorPresence } from "../components/cursor-presence";
+import CassetteLibrary from "./cassetteLibrary";
+import WiiMenu from "./WiiMenu";
 
 export function meta({}: Route.MetaArgs) {
 	return [
@@ -8,15 +9,12 @@ export function meta({}: Route.MetaArgs) {
 	];
 }
 
-export default function Home() {
-	return (
-		<main className="relative min-h-screen overflow-hidden p-8">
-			<CursorPresence />
-			<h1 className="text-4xl font-bold">Hello 👋</h1>
+export function loader({ request }: Route.LoaderArgs) {
+	return {
+		isCassetteHost: new URL(request.url).hostname === "cassettes.alexis.org.uk",
+	};
+}
 
-			<p className="mt-4 text-lg">
-				Move your mouse around and open this page in another tab.
-			</p>
-		</main>
-	);
+export default function Home({ loaderData }: Route.ComponentProps) {
+	return loaderData.isCassetteHost ? <CassetteLibrary /> : <WiiMenu />;
 }

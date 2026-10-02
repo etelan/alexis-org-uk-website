@@ -2,7 +2,7 @@ import { Suspense, useMemo } from "react";
 import * as THREE from "three";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { MapControls, OrbitControls } from "@react-three/drei";
-import './thrice.css'
+import './cassetteLibrary.css'
 
 const W = 4.25 // x
 const H = 2.75 // y

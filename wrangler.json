@@ -14,10 +14,16 @@
 		"head_sampling_rate": 0.2
 	},
 
-	"route": {
+	"routes": [
+	{
 		"pattern": "alexis.org.uk/*",
 		"zone_name": "alexis.org.uk"
 	},
+	{
+		"pattern": "cassettes.alexis.org.uk/*",
+		"zone_name": "alexis.org.uk"
+	}
+	],
 
 	"upload_source_maps": true,
 
