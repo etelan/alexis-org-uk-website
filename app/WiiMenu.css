@@ -8,7 +8,13 @@
 }
 
 .wii-whole-box {
-  width: 1024px;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background: #e9e9e9;
   padding: 12px;
   border-radius: 4px;
@@ -16,30 +22,37 @@
 
 .wii-whole-box .wii-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(3, 118px);
+  grid-template-columns: repeat(5, 18vw);
+  grid-auto-rows: auto;      /* rows follow tiles */
   gap: 10px;
+  align-items: start;        /* stop stretch fighting ratio */
 }
 
 .wii-whole-box .wii-grid .wii-tile {
+  aspect-ratio: 28 / 21;      /* Wii channel ratio ~ 16:9, tweak */
   border-radius: 20px;
   background: linear-gradient(#f7f7f7, #dcdcdc);
   box-shadow: inset 0 0 0 2.5px rgba(53, 52, 52, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 .wii-whole-box .wii-grid .wii-tile:hover {
   box-shadow: inset 0 0 0 4px rgba(12, 118, 160, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .wii-whole-box .wii-below-grid-bar {
-  height: 88px;
-  margin-top: 10px;
+  position: absolute;
   display: flex;
   align-items: center;
-  justify-content: center;
+  bottom: 0;
+  margin-top: 0;
+}
+
+@font-face {
+  font-family: digitalClock;
+  src: url('fonts/digital-7.ttf');
 }
 
 .date {
-  font-size: 20px;
+  font-size: 8vh;
   color: #777;
+  font-family: digitalClock;
 }
