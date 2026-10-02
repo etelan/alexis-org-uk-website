@@ -48,7 +48,7 @@
 
 @font-face {
   font-family: digitalClock;
-  src: url('fonts/digital-7.ttf');
+  src: url('../public/assets/fonts/digital-7.ttf');
 }
 
 .date {
