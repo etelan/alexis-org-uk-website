@@ -14,7 +14,7 @@
   position: relative;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: top;
   background: #e9e9e9;
   padding: 12px;
   border-radius: 4px;
@@ -23,20 +23,85 @@
 .wii-whole-box .wii-grid {
   display: grid;
   grid-template-columns: repeat(5, 18vw);
-  grid-auto-rows: auto;      /* rows follow tiles */
+  grid-auto-rows: repeat(2, auto); 
   gap: 10px;
-  align-items: start;        /* stop stretch fighting ratio */
+  margin-top: 5vh;
+  margin-bottom: 14vh;
+  align-items: start;
 }
 
+@media only screen and (max-width: 750px) {
+  .wii-whole-box .wii-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 5vh;
+    margin-bottom: 14vh;
+    align-items: start;
+
+  }
+
+  .wii-whole-box .wii-grid .wii-tile {
+    position: relative;
+    aspect-ratio: 40 / 21;
+    border-radius: 5px;
+    min-width: 45vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(#f7f7f7, #dcdcdc);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* outer only */
+    overflow: hidden;
+  }
+
+  .wii-whole-box .wii-grid .wii-tile:nth-child(n + 9) {
+    display: none;
+  }
+
+  .wii-whole-box .wii-footer .timebox {
+    width: fit-content;
+    margin-top: -4px;
+    border-radius: 200px 200px 0 0 / 90px 90px 0 0; 
+    border-top: 4px solid #4abbe8b6;
+    border-left: 4px solid #4abbe8b6;
+    border-right: 4px solid #4abbe8b6;
+    -webkit-transform: rotate(180deg);
+    background: #e9e9e9;
+  }
+} 
+
 .wii-whole-box .wii-grid .wii-tile {
-  aspect-ratio: 28 / 21;      /* Wii channel ratio ~ 16:9, tweak */
+  position: relative;
+  aspect-ratio: 40 / 21;
   border-radius: 20px;
+  max-width: 18vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: linear-gradient(#f7f7f7, #dcdcdc);
-  box-shadow: inset 0 0 0 2.5px rgba(53, 52, 52, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-size: cover;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* outer only */
+  overflow: hidden;
 }
+
+.wii-whole-box .wii-grid .wii-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2.5px rgba(53, 52, 52, 0.4);
+  pointer-events: none; /* keep hover/click on tile */
+}
+
 .wii-whole-box .wii-grid .wii-tile:hover {
-  box-shadow: inset 0 0 0 4px rgba(12, 118, 160, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 6px rgba(17, 139, 187, 0.4), 0 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.wii-whole-box .wii-grid .wii-tile .wii-tile-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fill tile, crop excess */
+  pointer-events: none;
 }
 
 @font-face {
@@ -58,12 +123,10 @@
   align-items: center;
   background: linear-gradient(to bottom, #b4b4ba, #cfd1d7);
   bottom: 0;
-  margin-top: 0;
-  height: 15vh;
 }
 
 .wii-whole-box .wii-footer .timebox {
-  width: 30vw;
+  width: fit-content;
   margin-top: -4px;
   border-radius: 200px 200px 0 0 / 90px 90px 0 0; 
   border-top: 4px solid #4abbe8b6;
@@ -76,7 +139,7 @@
 .wii-whole-box .wii-footer .time {
   font-size: 8vh;
   color: #777;
-  width: 30vw;
+  width: 20vh;
   text-align: center;
   font-family: digitalClock;
   -webkit-transform: rotate(180deg);
@@ -88,4 +151,5 @@
   text-align: center;
   color: #777;
   font-family: softerFont;
+  margin-bottom: 1vh;
 }
