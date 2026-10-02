@@ -33,6 +33,7 @@
   border-radius: 20px;
   background: linear-gradient(#f7f7f7, #dcdcdc);
   box-shadow: inset 0 0 0 2.5px rgba(53, 52, 52, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-size: cover;
 }
 .wii-whole-box .wii-grid .wii-tile:hover {
   box-shadow: inset 0 0 0 4px rgba(12, 118, 160, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
