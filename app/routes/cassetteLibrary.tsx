@@ -133,7 +133,20 @@ export default function App() {
 
         <MapControls
           enableRotate={false}
-          onChange={(e) => { const c = e?.target; c.target.z = c.object.position.z = 0 }}/> // lock the orbit queen
+          onChange={(e) => {
+            const controls = e?.target;
+            if (
+              controls &&
+              typeof controls === "object" &&
+              "target" in controls &&
+              controls.target instanceof THREE.Vector3 &&
+              "object" in controls &&
+              controls.object instanceof THREE.Camera
+            ) {
+              controls.target.z = controls.object.position.z = 0;
+            }
+          }}
+        />
 
         {/* GREEN R.E.M */}
         <Box 
