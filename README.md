@@ -18,7 +18,7 @@ npm run dev
 Cloudflare bindings in `wrangler.json`:
 
 ```sh
-npm run typegen
+npm run cf-typegen
 ```
 
 ## Prod Build

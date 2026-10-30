@@ -24,6 +24,7 @@
 		"three": "^0.186.1"
 	},
 	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20260504.1",
 		"@cloudflare/vite-plugin": "1.15.3",
 		"@react-router/dev": "7.9.6",
 		"@tailwindcss/vite": "4.1.17",
@@ -45,7 +46,7 @@
 		"deploy": "wrangler deploy",
 		"dev": "react-router dev",
 		"preview": "npm run build && vite preview",
-		"typecheck": "npm run typegen && tsc -b"
+		"typecheck": "npm run cf-typegen && tsc -b"
 	},
 	"type": "module",
 	"allowScripts": {
