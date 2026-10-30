@@ -1,7 +1,7 @@
-import { Suspense, useMemo } from "react";
+import { useMemo } from "react";
 import * as THREE from "three";
 import { Canvas, useLoader } from "@react-three/fiber";
-import { MapControls, OrbitControls } from "@react-three/drei";
+import { MapControls } from "@react-three/drei";
 import './cassetteLibrary.css'
 
 const W = 4.25 // x
@@ -12,6 +12,103 @@ const PERIMETER = H + 3*D
 const highResImageSRC = "images/high_res/"
 const lowResImageSRC = "images/low_res/"
 const lowResMode = true
+
+const cassetteData = [
+  {
+    title: "GREEN R.E.M",
+    position: 0,
+    image: "GREEN_REM",
+    imageOffsetArray: [-0.47, 0.1, 0],
+    multArray: [1, 1.5, 0.97],
+    flip: false,
+  },
+  {
+    title: "Music Without Edges",
+    position: 1,
+    image: "Robert_Cox_-_Music_Without_Edges",
+    imageOffsetArray: [-0.5, 0.09, 0],
+    multArray: [1, 1.8, 1.09],
+    flip: false,
+  },
+  {
+    title: "The Future Sound (Of London)",
+    position: 3,
+    image: "the_future_sound_of_london",
+    imageOffsetArray: [0, 0.2, 0],
+    multArray: [1, 2, 1.07],
+    flip: true,
+  },
+  {
+    title: "The Sugar Cubes",
+    position: 10,
+    image: "the_sugar_cubes_-_lifes_too_good",
+    imageOffsetArray: [-0.3, 0.2, 0],
+    multArray: [1, 2, 1.05],
+    flip: true,
+  },
+  {
+    title: "DX20V",
+    position: 5,
+    image: "DX20V_WAVE",
+    imageOffsetArray: [0, 0.23, -0.1],
+    multArray: [1, 2, 1],
+    backupColour: "#232323",
+    flip: false,
+  },
+  {
+    title: "Rules For Radicals",
+    position: 4,
+    image: "trench_art_-_RULES_FOR_RADICALS",
+    imageOffsetArray: [-0.32, 0.144, 0],
+    multArray: [1, 1.7, 1.056],
+    backupColour: "#c2c2c2",
+    flip: false,
+  },
+  {
+    title: "Artsy One",
+    position: 7,
+    image: "Loris_S_Sarid_-_Innis_Chonnel_-_WHERE_THE_ROUND_THINGS_LIVE",
+    imageOffsetArray: [-0.35, 0.155, -0.22],
+    multArray: [1, 1.8, 1],
+    backupColour: "#c2c2c2",
+    flip: false,
+  },
+  {
+    title: "Tragic Tigres Sad Meltdown",
+    position: 6,
+    image: "Death_Is_Not_The_End_-_Tragic_Tigers_Sad_Meltdown",
+    imageOffsetArray: [-0.4, 0.14, 0],
+    multArray: [1, 1.8, 1],
+    backupColour: "#c2c2c2",
+    flip: false,
+  },
+  {
+    title: "from heaven",
+    position: 9,
+    image: "exlruth_-_from_heaven",
+    imageOffsetArray: [-0.45, 0.07, 0],
+    multArray: [1, 1.5, 1.05],
+    backupColour: "#c2c2c2",
+    flip: true,
+  },
+  {
+    title: "Esoteric Alchemy",
+    position: 8,
+    image: "Alchemy_-_Esoteric",
+    imageOffsetArray: [-0.35, 0.181, 0],
+    multArray: [1, 1.9, 1.016],
+    flip: false,
+  },
+  {
+    title: "Orchestral Rock",
+    position: 2,
+    image: "The_Sythesizer_Rock_Orchestra_-_Orchestral_Rock",
+    imageOffsetArray: [-1.8, -0.37, 0],
+    multArray: [1, 1.5, 0.94],
+    backupColour: "#c2c2c2",
+    flip: false,
+  },
+]
 
 // Loading manager code
 const loadingManager = new THREE.LoadingManager();
@@ -31,7 +128,10 @@ loadingManager.onLoad = async function () {
 loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
     const progress = (itemsLoaded / itemsTotal) * 100; // Percentage
     document.getElementById('progress-bar')?.style.setProperty('width', `${progress}%`);
-    document.getElementById('status-text')?.style.setProperty('textContent', `Loaded ${itemsLoaded}/${itemsTotal} assets`);
+    const statusElement = document.getElementById('status-text')
+    if (statusElement) {
+      statusElement.textContent = `Loaded ${itemsLoaded}/${itemsTotal} assets`
+    }
     console.log(`Progress: ${progress.toFixed(1)}%`);
 };
 
@@ -148,92 +248,17 @@ export default function App() {
           }}
         />
 
-        {/* GREEN R.E.M */}
-        <Box 
-          position={0} 
-          imageSRC={lowResMode ? lowResImageSRC + "GREEN_REM.PNG" : highResImageSRC + "GREEN_REM.JPG"}
-          imageOffsetArray={[-0.47, 0.1, 0]} 
-          multArray={[1, 1.5, 0.97]}/>
-
-        {/* Music Without Edges */}
-        <Box 
-          position={1} 
-          imageSRC={lowResMode ? lowResImageSRC + "Robert_Cox_-_Music_Without_Edges.PNG" : highResImageSRC + "Robert_Cox_-_Music_Without_Edges.JPG"}
-          imageOffsetArray={[-0.5, 0.09, 0]} 
-          multArray={[1, 1.8, 1.09]} />
-
-        {/* The Future Sound (Of London) */}
-        <Box 
-          position={3} 
-          imageSRC={lowResMode ? lowResImageSRC + "the_future_sound_of_london.PNG" : highResImageSRC + "the_future_sound_of_london.JPG"}
-          imageOffsetArray={[0, 0.2, 0]} 
-          multArray={[1, 2, 1.07]} 
-          flip={true}/>
-  
-
-        {/* The Sugar Cubes */}
-        <Box 
-          position={10} 
-          imageSRC={lowResMode ? lowResImageSRC + "the_sugar_cubes_-_lifes_too_good.PNG" : highResImageSRC + "the_sugar_cubes_-_lifes_too_good.JPG"}
-          imageOffsetArray={[-0.3, 0.2, 0]} 
-          multArray={[1, 2, 1.05]} 
-          flip={true}/>
-
-        {/* DX20V */}
-        <Box 
-          position={5} 
-          imageSRC={lowResMode ? lowResImageSRC + "DX20V_WAVE.PNG" : highResImageSRC + "DX20V_WAVE.JPG"}
-          imageOffsetArray={[0, 0.23, -0.1]} 
-          multArray={[1, 2, 1]}
-          backupColour="#232323"/>
-        
-        {/* Rules For Radicals */}
-        <Box 
-          position={4} 
-          imageSRC={lowResMode ? lowResImageSRC + "trench_art_-_RULES_FOR_RADICALS.PNG" : highResImageSRC + "trench_art_-_RULES_FOR_RADICALS.JPG"} 
-          imageOffsetArray={[-0.32, 0.144, 0]} 
-          multArray={[1, 1.7, 1.056]}
-          backupColour="#c2c2c2" />
-
-        {/* Artsy One */}
-        <Box 
-          position={7} 
-          imageSRC={lowResMode ? lowResImageSRC + "Loris_S_Sarid_-_Innis_Chonnel_-_WHERE_THE_ROUND_THINGS_LIVE.PNG" : highResImageSRC + "Loris_S_Sarid_-_Innis_Chonnel_-_WHERE_THE_ROUND_THINGS_LIVE.JPG"} 
-          imageOffsetArray={[-0.35, 0.155, -0.22]} 
-          multArray={[1, 1.8, 1]}
-          backupColour="#c2c2c2" />
-
-        {/* Tragic Tigres Sad Meltdown */}
-        <Box 
-          position={6} 
-          imageSRC={lowResMode ? lowResImageSRC + "Death_Is_Not_The_End_-_Tragic_Tigers_Sad_Meltdown.PNG" : highResImageSRC + "Death_Is_Not_The_End_-_Tragic_Tigers_Sad_Meltdown.JPG"} 
-          imageOffsetArray={[-0.4, 0.14, 0]} 
-          multArray={[1, 1.8, 1]}
-          backupColour="#c2c2c2" />
-
-        {/* from heaven */}
-        <Box 
-          position={9} 
-          imageSRC={lowResMode ? lowResImageSRC + "exlruth_-_from_heaven.PNG" : highResImageSRC + "exlruth_-_from_heaven.JPG"} 
-          imageOffsetArray={[-0.45, 0.07, 0]} 
-          multArray={[1, 1.5, 1.05]}
-          backupColour="#c2c2c2"
-          flip={true} />
-
-        {/* Esoteric Alchemy */}
-        <Box 
-          position={8} 
-          imageSRC={lowResMode ? lowResImageSRC + "Alchemy_-_Esoteric.PNG" : highResImageSRC + "Alchemy_-_Esoteric.JPG"} 
-          imageOffsetArray={[-0.35, 0.181, 0]} 
-          multArray={[1, 1.9, 1.016]} />
-
-        {/* Orchestral Rock */}
-        <Box 
-          position={2} 
-          imageSRC={lowResMode ? lowResImageSRC + "The_Sythesizer_Rock_Orchestra_-_Orchestral_Rock.PNG" : highResImageSRC + "The_Sythesizer_Rock_Orchestra_-_Orchestral_Rock.JPG"} 
-          imageOffsetArray={[-1.8, -0.37, 0]} 
-          multArray={[1, 1.5, 0.94]}
-          backupColour="#c2c2c2" />
+        {cassetteData.map((cassette) => (
+          <Box
+            key={cassette.title}
+            position={cassette.position}
+            imageSRC={lowResMode ? `${lowResImageSRC}${cassette.image}.PNG` : `${highResImageSRC}${cassette.image}.JPG`}
+            imageOffsetArray={cassette.imageOffsetArray}
+            multArray={cassette.multArray}
+            backupColour={cassette.backupColour}
+            flip={cassette.flip}
+          />
+        ))}
 
       </Canvas>
     </div>
