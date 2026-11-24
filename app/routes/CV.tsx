@@ -42,9 +42,9 @@ export default function CV() {
         <h4>Bury St Edmunds, IP33 1JT</h4>
         <br/>
 
-        <p>I am currently a Full Stack Developer at Songkick / Warner Media Group. Songkick's role is to provide near real-time information and pricing for live music event tickets from a broad network of ticketing suppliers. Songkick is a regional team, with the headquarters based in London, but with people working from Spain, Turkey, Wales and Scotland. I have experience with Ruby on Rails, Node.js, and Kubernetes due to a microservice architecture. Worked with BigQuery for large scale data analysis from our Export Transform Load jobs. React, Embedded Ruby (ERB), JavaScript (some TypeScript), CSS and HTML on the frontend. ERB is the Ruby Templating System which allows reusing and embedding of Ruby (and Javascript) code into HTML documents. Passed my AWS CLF-C02 Exam on Friday 24th July 2026, after revising for over half a year.</p>
+        <p>I am currently a Full Stack Developer at Songkick / Warner Media Group. Songkick's role is to provide near real-time information and pricing for live music event tickets from a broad network of ticketing suppliers. Songkick is a regional team, with the headquarters based in London, but with people working from Spain, Turkey, Wales and Scotland. I have experience with Ruby on Rails, Node.js, and Kubernetes due to a microservice architecture. Worked with BigQuery for large scale data analysis from our Export Transform Load jobs. React, Embedded Ruby (ERB), JavaScript (some TypeScript), CSS and HTML on the frontend. ERB is the Ruby Templating System which allows reusing and embedding of Ruby (and Javascript) code into HTML documents. Passed my AWS CLF-C02 Exam on Friday 24th July 2026.</p>
         <br/>
-        <p>I led the new search modal work on Songkick. Additionally, I had a large input into the design of the React work for the search carousel and results retrieval on the website. The core search functionality was based on Elasticsearch and I built the React component to interface with that platform. This meant communicating with the Design team to implement desktop and mobile Figma designs, ensuring the modal's reactivity with the backend API, while maintaining brand consistency, while meeting accessibility (a11y) standards. </p>
+        <p>I led the new search modal work on Songkick. Additionally, I had a large input into the design of the React work for the search carousel and results retrieval on the website. The core search functionality was based on Elasticsearch and I built the React component to interface with that platform. This meant communicating with the Design team to implement desktop and mobile Figma designs, ensuring the modal's reactivity with the backend API, while maintaining brand consistency and meeting accessibility (a11y) standards. </p>
         <br/>
 
         <h2>Experience</h2>
@@ -93,13 +93,13 @@ export default function CV() {
         </ul>
         <br/>
 
-        <h3>Minecraft Trainline Website (2022)</h3>
+        <h3>Personal Website (2026)</h3>
         <ul>
-          <li>Uses Spring Boot for the API</li>
-          <li>Raw HTML and CSS for frontend</li>
-          <li>On Error, Loading, and Success states for the frontend</li>
+          <li>Uses React, TypeScript/Javascript and Cloudflare Durable Objects</li>
+          <li>Multiplayer Cursor Functionality (you can see others realtime cursor locations)</li>
+          <li>Currently working on a cassette library to view and sample my collection</li>
           <li>Lua with a Minecraft Mod in order for me to send data to my API</li>
-          <li>Realtime web viewable updates on in-game train locations</li>
+          <li>Future plans include an online drawing community board that syncs to my physical 64x64 pixel grid display</li>
         </ul>
         <br/>
 
