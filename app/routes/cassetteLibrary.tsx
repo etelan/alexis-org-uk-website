@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { MapControls } from "@react-three/drei";
@@ -10,9 +10,7 @@ const H = 2.75 // y
 const D = 0.56 // z
 const PERIMETER = H + 3*D
 
-const highResImageSRC = "images/high_res/"
-const lowResImageSRC = "images/low_res/"
-const lowResMode = true
+const lowResImageSRC = "/images/low_res/"
 
 const cassetteData = [
   {
@@ -111,41 +109,15 @@ const cassetteData = [
   },
 ]
 
-// Loading manager code
-const loadingManager = new THREE.LoadingManager();
-loadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
-  console.log(`Started loading: ${url}. Loaded ${itemsLoaded} of ${itemsTotal} files.`);
-};
-
-loadingManager.onLoad = async function () {
-  console.log('Loading complete!');
-  const loadingScreen = document.getElementById('loading-screen');
-  if (loadingScreen) {
-    loadingScreen.style.opacity = '0';
-    loadingScreen.style.pointerEvents = 'none';
-  }
-}
-
-loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
-    const progress = (itemsLoaded / itemsTotal) * 100; // Percentage
-    document.getElementById('progress-bar')?.style.setProperty('width', `${progress}%`);
-    const statusElement = document.getElementById('status-text')
-    if (statusElement) {
-      statusElement.textContent = `Loaded ${itemsLoaded}/${itemsTotal} assets`
-    }
-    console.log(`Progress: ${progress.toFixed(1)}%`);
-};
-
 // This creates our cassette texture from the image, with adjustable settings
 function createCassetteTexture(image: HTMLImageElement, offset: number = 0, faceRatio: number[] = [W, H], heightMult: number=1, flip: boolean = false, base: string='#cccccc') {
-  console.log(`The Image Is: ${image}`)
-  const canvasWidth = faceRatio[0] * 700; 
+  const canvasWidth = faceRatio[0] * 700;
   const canvasHeight = faceRatio[1] * 700 / heightMult;
 
   offset = offset == 0 ? 0 : (image.height / (PERIMETER / offset)) * -1
   const imageScaleUpRatio = canvasWidth / image.width;
   image.width = image.width * imageScaleUpRatio
-  image.height = image.height * imageScaleUpRatio 
+  image.height = image.height * imageScaleUpRatio
 
   const canvas = document.createElement("canvas");
   canvas.width = canvasWidth;
@@ -155,8 +127,6 @@ function createCassetteTexture(image: HTMLImageElement, offset: number = 0, face
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-  ctx.save();        
-  
   ctx.save();
   if (flip) {
     ctx.translate(canvasWidth, canvasHeight); // origin → bottom edge
@@ -171,8 +141,7 @@ function createCassetteTexture(image: HTMLImageElement, offset: number = 0, face
 }
 
 // All arrays are [back, top, front]
-function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour, flip = false }: { position: number, imageSRC: string, imageOffsetArray: number[], multArray: number[], backupColour?: string, flip?: boolean }) {  
-  console.log("Loading image: " + imageSRC)
+function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour, flip = false, loadingManager }: { position: number, imageSRC: string, imageOffsetArray: number[], multArray: number[], backupColour?: string, flip?: boolean, loadingManager: THREE.LoadingManager }) {
   const imageOffsetBack = imageOffsetArray[0]
   const imageOffsetTop = imageOffsetArray[1]
   const imageOffsetFront = imageOffsetArray[2]
@@ -205,13 +174,21 @@ function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour, fl
 
     // order: right, left, top, bottom, FRONT, back
     return [plain(), plain(), top, plain(), front, back];
-  }, [loaded]);
+  }, [loaded, imageOffsetBack, imageOffsetTop, imageOffsetFront, imageTopMult, imageFrontMult, imageBackMult, imageFrontBackupColour, flip]);
+
+  useEffect(() => () => {
+    materials.forEach((material) => {
+      material.map?.dispose();
+      material.dispose();
+    });
+  }, [materials]);
 
   return (
     <mesh
       material={materials}
       position={[(position-5) * (D+0.2), 0, 0]}
       rotation={[0, flip ? Math.PI / 2 : -Math.PI / 2, 0]}
+      frustumCulled
     >
       <boxGeometry args={[W, H, D]} />
     </mesh>
@@ -219,22 +196,46 @@ function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour, fl
 }
 
 export default function App() {
+  const [loading, setLoading] = useState({ progress: 0, active: true });
+
+  const loadingManager = useMemo(() => {
+    const manager = new THREE.LoadingManager();
+    manager.onProgress = (_url, itemsLoaded, itemsTotal) => {
+      setLoading({ progress: itemsTotal === 0 ? 100 : (itemsLoaded / itemsTotal) * 100, active: true });
+    };
+    manager.onLoad = () => setLoading({ progress: 100, active: false });
+    manager.onError = () => setLoading({ progress: 100, active: false });
+    return manager;
+  }, []);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      setLoading((current) => ({ ...current, active: false }));
+    }, 15000);
+    return () => window.clearTimeout(timeout);
+  }, []);
+
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div className="cassette-library">
       <BackButton light />
-      <div id="loading-screen">
-          <div id="progress-container">
-              <div id="progress-bar"></div>
+      <div className={`cassette-library__loading${loading.active ? "" : " cassette-library__loading--complete"}`} aria-live="polite">
+          <div className="cassette-library__progress-container">
+              <div className="cassette-library__progress-bar" style={{ width: `${loading.progress}%` }}></div>
           </div>
-          <p id="status-text">Loading assets...</p>
+          <p className="cassette-library__status">Loaded {Math.round(loading.progress)}% of assets</p>
       </div>
 
-      <Canvas 
-        camera={{ position: [0, 7, 0], fov: 60 }}>
-        <ambientLight intensity={2} />
+      <Canvas
+        camera={{ position: [0, 7, 0], fov: 60 }}
+        dpr={[1, 1.5]}
+        frameloop="demand"
+        gl={{ antialias: false, powerPreference: "high-performance" }}
+      >
+        <ambientLight intensity={1.5} />
 
         <MapControls
           enableRotate={false}
+          enableDamping={false}
           onChange={(e) => {
             const controls = e?.target;
             if (
@@ -250,18 +251,20 @@ export default function App() {
           }}
         />
 
-        {cassetteData.map((cassette) => (
-          <Box
-            key={cassette.title}
-            position={cassette.position}
-            imageSRC={lowResMode ? `${lowResImageSRC}${cassette.image}.PNG` : `${highResImageSRC}${cassette.image}.JPG`}
-            imageOffsetArray={cassette.imageOffsetArray}
-            multArray={cassette.multArray}
-            backupColour={cassette.backupColour}
-            flip={cassette.flip}
-          />
-        ))}
-
+        <Suspense fallback={null}>
+          {cassetteData.map((cassette) => (
+            <Box
+              key={cassette.title}
+              position={cassette.position}
+              imageSRC={`${lowResImageSRC}${cassette.image}.WEBP`}
+              imageOffsetArray={cassette.imageOffsetArray}
+              multArray={cassette.multArray}
+              backupColour={cassette.backupColour}
+              flip={cassette.flip}
+              loadingManager={loadingManager}
+            />
+          ))}
+        </Suspense>
       </Canvas>
     </div>
   );
