@@ -4,12 +4,12 @@
 
 This is a small, personal website built with React 19, React Router 7, Vite, and Cloudflare Workers. The structure is understandable at this scale: React UI and routes live in `app/`, the request handler and cursor-presence Durable Object live in `workers/`, and static content lives in `public/`.
 
-The strongest foundations are strict TypeScript settings, generated route types, a clear Worker entry point, and a shared cursor protocol. The main improvement areas are keeping scripts and docs accurate, making active routes and prototypes easier to distinguish, and adding a small automated test and formatting baseline.
+The strongest foundations are strict TypeScript settings, generated route types, a clear Worker entry point, and a shared cursor protocol. The main improvement areas are keeping scripts and docs accurate, scoping page styles, and expanding focused tests and formatting checks.
 
 ## Structure and behavior
 
-- [`app/routes.ts`](../app/routes.ts) registers the home page and `/cv`. The home loader selects the cassette library for `cassettes.alexis.org.uk`; otherwise it shows the Wii-style menu.
-- [`app/routes/WiiMenu.tsx`](../app/routes/WiiMenu.tsx) is an active component imported by the home route, rather than a separately registered route. [`app/routes/PixelDisplay.tsx`](../app/routes/PixelDisplay.tsx) appears to be a standalone experiment and is not registered.
+- [`app/routes.ts`](../app/routes.ts) registers the home page, `/cv`, and `/cassettes`. The home loader selects the cassette library for `cassettes.alexis.org.uk`; otherwise it shows the Wii-style menu.
+- [`app/components/wii-menu.tsx`](../app/components/wii-menu.tsx) and its link helper/tests are kept outside the route modules. [`app/experiments/pixel-display.tsx`](../app/experiments/pixel-display.tsx) is an unregistered experiment, and cassette source notes live under [`content/cassette-notes/`](../content/cassette-notes/).
 - [`workers/app.ts`](../workers/app.ts) dispatches `/ws/*` requests to the cursor Durable Object and sends other requests through React Router. Cursor types and parsing are shared in [`workers/cursor-protocol.ts`](../workers/cursor-protocol.ts).
 - [`public/`](../public) contains images and other static assets; `assets/fonts/` holds local font files.
 
@@ -25,9 +25,8 @@ This is a reasonable layout for a small site. As it grows, distinguish route ent
 
 ### Improve next
 
-4. **Clarify route modules versus experiments.** The active home route imports the Wii menu component from the route directory, while the pixel display module is not registered. This makes the route directory harder to interpret. Rename or relocate these modules when the area is next touched, and record which experiences are active.
-5. **Scope CSS more narrowly.** [`app/routes/cs.css`](../app/routes/cs.css) uses global selectors such as `body`, `h1`, and `p`; [`app/routes/cassetteLibrary.css`](../app/routes/cassetteLibrary.css) also styles the document body. Global rules make route-specific styling capable of affecting other screens. Prefer CSS modules or page-scoped class selectors.
-6. **Add a lightweight quality baseline.** There are no test files or test/lint/format scripts in the repository. Start with a formatter/linter and targeted tests for route selection and cursor-message parsing. The existing strict TypeScript configuration is a useful base, but does not check runtime behavior or formatting.
+4. **Scope CSS more narrowly.** [`app/routes/cs.css`](../app/routes/cs.css) uses global selectors such as `body`, `h1`, and `p`; [`app/routes/cassetteLibrary.css`](../app/routes/cassetteLibrary.css) also styles the document body. Global rules make route-specific styling capable of affecting other screens. Prefer CSS modules or page-scoped class selectors.
+5. **Expand the quality baseline.** Focused tests cover menu link destinations and cursor integration, but route selection and cursor-message parsing still need targeted tests. Add lint/format scripts when adopting those tools. The existing strict TypeScript configuration is a useful base, but does not check runtime behavior or formatting.
 
 ### Keep doing
 

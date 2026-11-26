@@ -1,4 +1,4 @@
-import { getWiiMenuTileData } from "./wiiMenuLinks";
+import { getWiiMenuTileData } from "./wii-menu-links";
 
 describe("Wii menu tile links", () => {
   test("links to the local cassette route in development", () => {

@@ -1,8 +1,8 @@
-import '../PixelDisplay.css';
+import "./pixel-display.css";
 import { CursorPresence } from "../components/cursor-presence";
 import { useState } from "react";
 
-export default function WiiMenu() {
+export default function PixelDisplay() {
 
   const [pixelColourGrid, setPixelColourGrid] = useState<string[]>(Array(1024).fill("#ffffff"));
   const [isDrawing, setIsDrawing] = useState(false);

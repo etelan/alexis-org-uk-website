@@ -1,6 +1,6 @@
 import type { Route } from "./+types/home";
 import CassetteLibrary from "./cassetteLibrary";
-import WiiMenu from "./WiiMenu";
+import WiiMenu from "../components/wii-menu";
 
 export function meta({}: Route.MetaArgs) {
 	return [

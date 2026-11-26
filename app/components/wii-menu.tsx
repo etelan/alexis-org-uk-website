@@ -1,6 +1,6 @@
-import '../WiiMenu.css';
+import "./wii-menu.css";
 import { CursorPresence } from "../components/cursor-presence";
-import { getWiiMenuTileData } from "./wiiMenuLinks";
+import { getWiiMenuTileData } from "./wii-menu-links";
 import { useEffect, useState } from "react";
 
 // Update the time every second
