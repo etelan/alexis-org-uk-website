@@ -1,5 +1,14 @@
 # Welcome to React Router + Cloudflare Workers!
 
+### Requirements
+
+Use Node.js 20.19 or newer, or 22.12 or newer. For example, with `nvm`:
+
+```bash
+nvm install 22
+nvm use 22
+```
+
 ### Dep Install
 ```bash
 npm install
