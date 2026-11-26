@@ -24,15 +24,21 @@
 		"three": "^0.186.1"
 	},
 	"devDependencies": {
-		"@cloudflare/workers-types": "^4.20260504.1",
 		"@cloudflare/vite-plugin": "1.15.3",
+		"@cloudflare/workers-types": "^4.20260504.1",
 		"@react-router/dev": "7.9.6",
 		"@tailwindcss/vite": "4.1.17",
+		"@testing-library/jest-dom": "^8.0.0",
+		"@testing-library/react": "^16.3.3",
+		"@types/jest": "^30.0.0",
 		"@types/node": "24.10.1",
 		"@types/react": "19.2.7",
 		"@types/react-dom": "19.2.3",
 		"@types/three": "^0.186.0",
+		"jest": "^30.5.2",
+		"jest-environment-jsdom": "^30.5.2",
 		"tailwindcss": "4.1.17",
+		"ts-jest": "^29.4.15",
 		"typescript": "5.9.3",
 		"vite": "^7.0.0",
 		"vite-tsconfig-paths": "5.1.4",
@@ -46,7 +52,8 @@
 		"deploy": "wrangler deploy",
 		"dev": "react-router dev",
 		"preview": "npm run build && vite preview",
-		"typecheck": "npm run cf-typegen && tsc -b"
+		"typecheck": "npm run cf-typegen && tsc -b",
+		"test": "NODE_OPTIONS=--experimental-vm-modules jest"
 	},
 	"type": "module",
 	"allowScripts": {

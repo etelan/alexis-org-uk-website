@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.cloudflare.json",
+  "compilerOptions": {
+    "types": ["jest", "@testing-library/jest-dom", "node"],
+    "module": "ES2022",
+    "moduleResolution": "bundler"
+  },
+  "include": ["app/**/*.ts", "app/**/*.tsx", "workers/**/*.ts", "jest.setup.ts", "test/**/*.ts", "test/**/*.tsx"]
+}
