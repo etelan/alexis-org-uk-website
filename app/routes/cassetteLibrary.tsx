@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import * as THREE from "three";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { MapControls } from "@react-three/drei";
+import { BackButton } from "../components/back-button";
 import './cassetteLibrary.css'
 
 const W = 4.25 // x
@@ -220,6 +221,7 @@ function Box({ position, imageSRC, imageOffsetArray, multArray, backupColour, fl
 export default function App() {
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
+      <BackButton light />
       <div id="loading-screen">
           <div id="progress-container">
               <div id="progress-bar"></div>

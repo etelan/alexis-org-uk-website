@@ -1,4 +1,5 @@
 import { CursorPresence } from "../components/cursor-presence";
+import { BackButton } from "../components/back-button";
 import "../routes/cs.css";
 import { useState, type MouseEvent } from "react";
 
@@ -24,6 +25,7 @@ export default function CV() {
   return (
       <div className="cv-page">
         <CursorPresence />
+        <BackButton />
         <h1>Alexis Baker</h1>
 
         <h4><button type="button" className="copyable" onClick={(event) => copyUrl("jobs@alexis.org.uk", event)}>jobs@alexis.org.uk</button> | <a style={{ color: 'blue' }} href="https://www.linkedin.com/in/etelan/" target="_blank" rel="noopener noreferrer">LinkedIn</a> (<button type="button" className="copyable" onClick={(event) => copyUrl("https://www.linkedin.com/in/etelan/", event)}>etelan</button>)</h4>
